@@ -36,7 +36,7 @@ final class OpenAIChatCompletionModel {
   }
 
   /// {@macro openai_chat_completion}
-  const OpenAIChatCompletionModel({
+  OpenAIChatCompletionModel({
     required this.id,
     required this.created,
     required this.choices,
@@ -66,17 +66,6 @@ final class OpenAIChatCompletionModel {
     };
   }
 
-  factory OpenAIChatCompletionModel.fromJson(Map<String, dynamic> json) {
-    return OpenAIChatCompletionModel(
-      id: json['id'],
-      created: DateTime.fromMillisecondsSinceEpoch(json['created'] * 1000),
-      choices: (json['choices'] as List)
-          .map((e) => OpenAIChatCompletionChoiceModel.fromJson(e))
-          .toList(),
-      usage: OpenAIChatCompletionUsageModel.fromJson(json['usage']),
-      jsonResponse: json,
-    );
-  }
 
   @override
   String toString() {
