@@ -25,6 +25,8 @@ final class OpenAIChatCompletionModel {
   /// The [usage] of the chat completion.
   final OpenAIChatCompletionUsageModel usage;
 
+  Map<String, dynamic>? jsonResponse;
+  
   /// Weither the chat completion have at least one choice in [choices].
   bool get haveChoices => choices.isNotEmpty;
 
@@ -39,6 +41,7 @@ final class OpenAIChatCompletionModel {
     required this.created,
     required this.choices,
     required this.usage,
+    this.jsonResponse,
   });
 
   /// This is used  to convert a [Map<String, dynamic>] object to a [OpenAIChatCompletionModel] object.
@@ -61,6 +64,18 @@ final class OpenAIChatCompletionModel {
       "choices": choices.map((e) => e.toMap()).toList(),
       "usage": usage.toMap(),
     };
+  }
+
+  factory OpenAIChatCompletionModel.fromJson(Map<String, dynamic> json) {
+    return OpenAIChatCompletionModel(
+      id: json['id'],
+      created: DateTime.fromMillisecondsSinceEpoch(json['created'] * 1000),
+      choices: (json['choices'] as List)
+          .map((e) => OpenAIChatCompletionChoiceModel.fromJson(e))
+          .toList(),
+      usage: OpenAIChatCompletionUsageModel.fromJson(json['usage']),
+      jsonResponse: json,
+    );
   }
 
   @override
